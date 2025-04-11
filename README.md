@@ -81,3 +81,26 @@ __attribute__((always_inline)) inline int32_t add(int32_t x, int32_t y){
 without the always_inline compiler may ignore if needed. 
 
 ### function pragmas
+add extra options for compilation on that particular area.
+
+```
+#pragma GCC push
+#prgma GCC optimize("O0")
+int32_t add(int32_t x, int32_t y)
+{
+  return(x+y);
+}
+#pragma GCC ppop
+```
+### note
+always remeber these are for gcc. so use compile time switch for them. to avoid errors when you use other compilers.
+```
+#ifndef (__GNUC__)
+#define __attribute__(x)
+#endif
+```
+## Register definition files
+directly dereference memory
+![image](https://github.com/user-attachments/assets/90d533ed-abe7-43d8-948c-f3cbf7566465)
+``(*((volatile uint16_t *)0x4000000)) = 0x0202;``
+
