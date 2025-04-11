@@ -355,7 +355,34 @@ CB_Status CB_is_add_item(CB_t * cbuf, uint8_t item){
 }
 
 ```
+## linked list
+```
+typedef struct {
+	Node_t *next;
+	uint32_t data;
+} Node_t;
+//add items
+LL_Append(Node_t * node, uint32_t data){
+	Node_t * nn =node;
+	if (node ==NULL){
+		return;
+	}
+	if (node->next ==NULL){
+		node->next = (Node_t *)malloc(sizeof(Node_t));
+		nn = node->next;
+	}
+	else {
+		while( nn->next != NULL){
+			nn = nn->next;
+		}
+		nn->next = (Node_t *)malloc(sizeof(Node_t));
+		nn=nn->next;
+	}
+	nn->data = data;
+	nn->next = NULL;
+}
 
+```
 
 
 
