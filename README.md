@@ -298,8 +298,63 @@ LB_Status LIFO_Add_Item(LIFO_Buf_t * lbuf, uint8_t item){
 }
 
 ```
+## Circular buffer
 
+```
+typedef enum {
+	CB_NO_ERROR =0;
+	CB_FULL;
+	CB_NOT_FULL;
+	CB_EMPTY;
+	CB_NOT_EMPTY;
+	CB_NULL;
+} CB_Status;
 
+//implement struct
+typedef struct {
+	uint8_t *base;
+	uint8_t *head;
+	uint8_t *tail;
+	uint32_t length;
+	uint32_t count; //optional
+} CB_t;
+// using count it is easy to check the full
+if (buf.length == buf.count) {
+	return CB_FULL;
+}
+
+CB_Status CB_is_buffer_full(CB_t * cbuf){
+	/*check the pointers are valid*/
+	if (! cbuf || ! cbuf->head || ! cbuf->tail || !cbuf->base){
+		return CB_NULL;
+	}
+	if ( (cbuf->tail == cbuf->head+1) || (cbuf->head == cbuf->tail + (cbuf->length -1))){
+		return CB_FULL;
+	}
+	else {
+		return CB_NOT_FULL;
+	}
+}
+
+CB_Status CB_is_add_item(CB_t * cbuf, uint8_t item){
+	/*check the pointers are valid*/
+	CB_Status status = CB_is_buffer_full(cbuf);
+
+	if (status == CB_NOT_FULL){
+		*cbuf->head = item;
+		// increment head
+		if (cbuf->head == cbuf->head + (cbuf->length -1)){
+			cbuf->head= cbuf->base;
+		}
+		else{
+			cbuf->head++;
+		}
+		status = CB_NO_ERROR;
+	}
+	return status;
+}
+
+```
 
 
 
